@@ -1,0 +1,130 @@
+#include <vector>
+
+#include <boost/shared_ptr.hpp>
+#include <gflags/gflags.h>
+#include <glog/logging.h>
+
+#include <cmath>
+
+#include "caffe/blob.hpp"
+#include "caffe/common.hpp"
+#include "caffe/layers/warp_self_layer.hpp"
+#include "caffe/util/math_functions.hpp"
+#include "caffe/util/device_alternate.hpp"
+
+
+int __NaN=0xFFC00000,__Infinity=0x7F800000,__Neg_Infinity=0xFF800000;
+const float NaN=*((float *)&__NaN),Infinity=*((float *)&__Infinity),Neg_Infinity=*((float *)&__Neg_Infinity);
+
+
+bool IsNaN(float dat)
+{
+ int & ref=*(int *)&dat;
+ return (ref&0x7F800000) == 0x7F800000 && (ref&0x7FFFFF)!=0;
+}
+
+
+namespace caffe {
+
+template <typename Dtype>
+void WarpSelfLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
+      const vector<Blob<Dtype>*>& top) {
+        string prefix = "\t\tWarp Self Layer:: LayerSetUp: \t";
+        N = bottom[0]->shape(0);
+        C = bottom[0]->shape(1);
+        H = bottom[0]->shape(2);
+        W = bottom[0]->shape(3);
+	output_H_ = bottom[0]->shape(2);
+        output_W_ = bottom[0]->shape(3);
+	std::cout<<prefix<<"Initialization finished."<<std::endl;
+}
+
+template <typename Dtype>
+void WarpSelfLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
+      const vector<Blob<Dtype>*>& top) {
+
+	string prefix = "\t\tWarp Self Layer:: Reshape: \t";
+        if(global_debug) std::cout<<prefix<<"Starting!"<<std::endl;
+
+	// reshape V
+	vector<int> shape(4);
+	shape[0] = N;
+	shape[1] = C;
+	shape[2] = output_H_;
+	shape[3] = output_W_;
+        top[0]->Reshape(shape);
+
+	if(global_debug) std::cout<<prefix<<"Finished."<<std::endl;
+}
+
+template <typename Dtype>
+void WarpSelfLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+    const vector<Blob<Dtype>*>& top) {
+
+        string prefix = "\t\tWarp Self Layer:: Forward_cpu: \t";
+	if(global_debug) std::cout<<prefix<<"Starting!"<<std::endl;
+
+        const Dtype* D = bottom[0]->cpu_data();
+        Dtype* V = top[0]->mutable_cpu_data();
+	caffe_set(top[0]->count(), (Dtype)NaN, V);        
+        
+        Dtype y;
+        int n, k;
+
+	// for each input
+	for(int i = 0; i < N; ++i) {
+		const Dtype* disparity   = D + (output_H_ * output_W_) * i;
+                Dtype* out = V + (output_H_ * output_W_) * i;
+                int row_idx;
+
+                for(int j = 0; j < C; ++j){
+                        for(int s = 0; s < output_H_; ++s){
+				for(int t = 0; t < output_W_; ++t) {
+					row_idx = output_W_ * s + t;                                                                                
+                                        if(IsNaN(disparity[row_idx]))
+                                           continue;
+                                        else{
+		                                y = t + disparity[row_idx];
+		                                n = (int)(floor(y));
+		                                k = n+1;
+                                                if(this->layer_param().warp_self_param().direction() == 0){
+				                        if( n >= 0 && n < output_W_)                   {out[output_W_*s+n] = disparity[row_idx] + Dtype(n)-y;}
+				                        if( k >= 0 && k < output_W_ && y>Dtype(n) )    {out[output_W_*s+k] = disparity[row_idx] + Dtype(k)-y;}
+						}else if(this->layer_param().warp_self_param().direction() == 1){
+						        if( n >= 0 && n < output_W_ && y==Dtype(n) )   {out[output_W_*s+n] = disparity[row_idx];} // integer
+                                                        else if(k >= 0 && k < output_W_ && y>Dtype(n)) {out[output_W_*s+k] = disparity[row_idx] + Dtype(k)-y;}
+						}else{
+						        if( n >= 0 && n < output_W_ )   {out[output_W_*s+n] = disparity[row_idx] + Dtype(n)-y;} // integer
+                                                }        
+
+                                       }
+				}
+
+                        }                       
+                }
+	}
+
+	if(global_debug) std::cout<<prefix<<"Finished."<<std::endl;
+
+}
+
+
+template <typename Dtype>
+void WarpSelfLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
+    const vector<bool>& propagate_down,
+    const vector<Blob<Dtype>*>& bottom) {
+
+    if (!propagate_down[0]) {
+      return;
+    }
+    return;
+}
+
+#ifdef CPU_ONLY
+STUB_GPU(WarpSelfLayer);
+#endif
+
+INSTANTIATE_CLASS(WarpSelfLayer);
+REGISTER_LAYER_CLASS(WarpSelf);
+
+}  // namespace caffe

@@ -1,0 +1,19 @@
+net: "train_rob_stage_one.prototxt"
+test_iter: 200
+test_interval: 1000
+base_lr: 4e-5
+lr_policy: "multistep"
+gamma: 0.5
+stepvalue: 80000
+stepvalue: 130000
+momentum: 0.9
+weight_decay: 0.0004
+display: 50
+max_iter:  1200000
+snapshot: 1000
+snapshot_prefix: "rob_stage_one"
+solver_mode: GPU
+solver_type: ADAM
+momentum2: 0.999
+delta: 1e-4
+
