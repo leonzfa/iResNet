@@ -35,14 +35,18 @@ This repository contains the code (in CAFFE) for "[Learning for Disparity Estima
 Notes: 
 
 - You should first install Caffe following the [Installation instructions](http://caffe.berkeleyvision.org/installation.html) here. 
+```
+make clean
+make all -j 12 tools
+```
 
 - The caffe code in this repository is modiffied from [DispNet](https://lmb.informatik.uni-freiburg.de/resources/software.php), which includes the "Correlation1D" layer.
 
-- The FlowWarp layer is from [FlowNet 2.0](https://github.com/lmb-freiburg/flownet2)
+- The FlowWarp layer is from [FlowNet 2.0](https://github.com/lmb-freiburg/flownet2).
 
 - We add RandomCrop layer and DataSwitch layer.
 
-- RandomCrop is used to crop bottom blob to desired width and height, but channel number of this layer is fixed to 7 (left image, right image, and disparity). If the desired width or height is larger than that of bottom blob, we use 128 to fill the first 6 channels, and use NaN to fill the last channels.
+- RandomCrop is used to crop bottom blob to desired width and height, but channel number of this layer is fixed to 7 (left image, right image, and disparity). If the desired width or height is larger than that of bottom blob, we use 128 to fill the first 6 channels, and use NaN to fill the last channel.
 
 ```
 layer {  name: "Random_crop_kitti2015"
