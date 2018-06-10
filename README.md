@@ -73,12 +73,22 @@ layer {  name: "Random_select_datasets"
 
 Download datasets using the instructions from http://www.cvlibs.net:3000/ageiger/rob_devkit. Put the folder "datasets_middlebury2014" under "CAFFE_ROOT/data". The file structure looks like:
 ```
-+── caffe
++── CAFFE_ROOT
 │   +── data
 │       +── datasets_middlebury2014
 │           +── metadata
 │           +── test
 │           +── training
+```
+
+
+For [Scene Flow dataset](https://lmb.informatik.uni-freiburg.de/resources/datasets/SceneFlowDatasets.en.html), we only use the FlyingThings3D subset. Please download RGB cleanpass images and its disparity. The file structure looks like:
+```
++── CAFFE_ROOT
+│   +── data
+│       +── FlyingThings3D_release
+│           +── disparity
+│           +── frames_cleanpass
 ```
 
 ### Training
@@ -89,15 +99,12 @@ Download datasets using the instructions from http://www.cvlibs.net:3000/ageiger
 ```
 sh ./make_lmdbs.sh
 ```
+Note that, if folder xxxx_lmdb exists, you should first delete this folder, in order to correctly making lmdbs.
 
-   Note that, if folder xxxx_lmdb exists, you should first delete this folder, in order to correctly making lmdbs. Besides, if you want to make lmdb for Scene Flow dataset, you should first download the [dataset](https://lmb.informatik.uni-freiburg.de/resources/datasets/SceneFlowDatasets.en.html). This dataset is large and may cost you a long time.
-
-4. Enter folder "CAFFE_ROOT/models/ROB_training", and run: (replace CAFFE_ROOT in the xxxx.prototxt under folder "ROB_training")
+4. Enter folder "CAFFE_ROOT/models/ROB_training", and replace CAFFE_ROOT in the xxxx.prototxt under folder "ROB_training". Then run:
 ```
 python ../train_rob.py 2>&1 | tee rob.log
 ```
-
-
 
 ### Evaluattion
 
