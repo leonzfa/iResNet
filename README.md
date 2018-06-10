@@ -85,14 +85,14 @@ Download datasets using the instructions from http://www.cvlibs.net:3000/ageiger
 
 2. Enter folder "CAFFE_ROOT/data", and use MATLAB to run the script "reshape_dataset.m"
 
-3. Open terminal, enter folder "CAFFE_ROOT/data", and run the script "make_lmdbs.sh"
+3. Open terminal, enter folder "CAFFE_ROOT/data", and run the script "make_lmdbs.sh" (replace CAFFE_ROOT first):
 ```
 sh ./make_lmdbs.sh
 ```
 
-Note that, if you want to make lmdb for Scene Flow dataset, you should first download the dataset(https://lmb.informatik.uni-freiburg.de/resources/datasets/SceneFlowDatasets.en.html). This dataset is large and may cost you a long
+Note that, if folder xxxx_lmdb exists, you should first delete this folder, in order to correctly making lmdbs. Besides, if you want to make lmdb for Scene Flow dataset, you should first download the dataset(https://lmb.informatik.uni-freiburg.de/resources/datasets/SceneFlowDatasets.en.html). This dataset is large and may cost you a long time.
 
-4. Enter folder "CAFFE_ROOT/models/model", and run:
+4. Enter folder "CAFFE_ROOT/models/ROB_training", and run: (replace CAFFE_ROOT in the xxxx.prototxt under folder "ROB_training")
 ```
 python ../train_rob.py 2>&1 | tee rob.log
 ```
