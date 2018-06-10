@@ -6,9 +6,6 @@ caffe_bin = '/home/leo/caffe_lzf/build/tools/caffe'
 
 # =========================================================
 
-my_dir = os.path.dirname(os.path.realpath(__file__))
-os.chdir(my_dir)
-
 if not os.path.isfile(caffe_bin):
     print('Caffe tool binaries not found. Did you compile caffe with tools (make all tools)?')
     sys.exit(1)
