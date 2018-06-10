@@ -1,6 +1,6 @@
 # iResNet
 
-This repository contains the code (in CAFFE) for "[Learning for Disparity Estimation through Feature Constancy](https://arxiv.org/abs/1712.01039)" paper (CVPR 2018) by Zhengfa Liang.
+This repository contains the code (in CAFFE) for "[Learning for Disparity Estimation through Feature Constancy](https://arxiv.org/abs/1712.01039)" paper (CVPR 2018 and [ROB 2018](http://www.robustvision.net/index.php)) by Zhengfa Liang.
  
 
 
