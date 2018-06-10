@@ -90,7 +90,7 @@ Download datasets using the instructions from http://www.cvlibs.net:3000/ageiger
 sh ./make_lmdbs.sh
 ```
 
-Note that, if folder xxxx_lmdb exists, you should first delete this folder, in order to correctly making lmdbs. Besides, if you want to make lmdb for Scene Flow dataset, you should first download the dataset(https://lmb.informatik.uni-freiburg.de/resources/datasets/SceneFlowDatasets.en.html). This dataset is large and may cost you a long time.
+   Note that, if folder xxxx_lmdb exists, you should first delete this folder, in order to correctly making lmdbs. Besides, if you want to make lmdb for Scene Flow dataset, you should first download the [dataset](https://lmb.informatik.uni-freiburg.de/resources/datasets/SceneFlowDatasets.en.html). This dataset is large and may cost you a long time.
 
 4. Enter folder "CAFFE_ROOT/models/ROB_training", and run: (replace CAFFE_ROOT in the xxxx.prototxt under folder "ROB_training")
 ```
