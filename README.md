@@ -120,9 +120,9 @@ Download the pretrained model from [Pretrained Model], and place it in the folde
 
 CVPR 2018
 
-| Scene Flow( for fine-tuning kitti)|  KITTI 2015 |
-|---|---|
-|[Baiduyun](https://pan.baidu.com/s/1yzopXEVoon2GTO2z-E9gZA)|[Baiduyun](https://pan.baidu.com/s/1_IPicEoPD-9xey2LoL556Q)|
+| Scene Flow | Starting point for fine-tuning kitti|  KITTI 2015 |
+|---|---|---|
+|[Baiduyun](https://pan.baidu.com/s/1MaX7oeMKjDT0gAwetBpp9Q)|[Baiduyun](https://pan.baidu.com/s/1yzopXEVoon2GTO2z-E9gZA)|[Baiduyun](https://pan.baidu.com/s/1_IPicEoPD-9xey2LoL556Q)|
 
 ROB 2018
 
